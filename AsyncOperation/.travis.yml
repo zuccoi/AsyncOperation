@@ -1,7 +1,4 @@
 language: objective-c
-osx_image: xcode10.2
-xcode_project: AsyncOperation.xcodeproj
-xcode_scheme: AsyncOperation
-xcode_destination: platform=iOS Simulator
-xcode_sdk: iphonesimulator
-platform=iOS Simulator,OS=12.2,name=iPhone 8
+ 
+script:
+  - xcodebuild -project AsyncOperation.xcodeproj -scheme AsyncOperation -destination 'platform=iOS Simulator,name=iPhone 8' test

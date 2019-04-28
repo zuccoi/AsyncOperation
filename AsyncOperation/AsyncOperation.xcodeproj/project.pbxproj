@@ -43,6 +43,8 @@
 		EB3BA1EB2275C15000F5855A /* EndHandlableOperationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndHandlableOperationTests.swift; sourceTree = "<group>"; };
 		EB3BA1EF2275C9AA00F5855A /* TestAsyncOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestAsyncOperation.swift; sourceTree = "<group>"; };
 		EB3BA1F12275DE4000F5855A /* AsyncBlockOperationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncBlockOperationTests.swift; sourceTree = "<group>"; };
+		EBAF51012276216B008768F5 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
+		EBAF51022276216B008768F5 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -67,6 +69,8 @@
 		EB3BA19A2275B85600F5855A = {
 			isa = PBXGroup;
 			children = (
+				EBAF51012276216B008768F5 /* LICENSE */,
+				EBAF51022276216B008768F5 /* README.md */,
 				EB3BA1A62275B85600F5855A /* AsyncOperation */,
 				EB3BA1B12275B85600F5855A /* AsyncOperationTests */,
 				EB3BA1A52275B85600F5855A /* Products */,

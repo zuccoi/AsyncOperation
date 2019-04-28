@@ -1,4 +1,4 @@
 language: objective-c
 
 script:
-  - xcodebuild -project AsyncOperation/AsyncOperation.xcodeproj -scheme AsyncOperation -destination 'platform=iOS Simulator,name=iPhone 8' test
+  - xcodebuild test -project AsyncOperation/AsyncOperation.xcodeproj -scheme AsyncOperationTests -destination 'platform=iOS Simulator,name=iPhone 8'

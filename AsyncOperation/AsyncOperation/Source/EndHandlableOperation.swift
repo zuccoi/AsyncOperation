@@ -77,7 +77,7 @@ extension OperationQueue {
 			- op: Operation to add
 			- didEndBlock: Block which will be set as didEndBlock of op -- it'll be called when the op ended
 	*/
-	open func addOperation(_ op: EndHandlableOperation, didEndBlock: (() -> Void)? = nil) {
+	open func addOperation(_ op: EndHandlableOperation, didEndBlock: (() -> Void)?) {
 		op.didEndBlock = didEndBlock
 		self.addOperation(op)
 	}

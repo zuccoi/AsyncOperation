@@ -26,13 +26,16 @@ open class EndHandlableOperation: Operation {
 		self.addObserver(self, forKeyPath: #keyPath(EndHandlableOperation.isFinished), options: [.old, .new], context: nil)
 	}
 	
+	deinit {
+		self.removeObserver(self, forKeyPath: #keyPath(EndHandlableOperation.isCancelled))
+		self.removeObserver(self, forKeyPath: #keyPath(EndHandlableOperation.isFinished))
+	}
+	
 	// MARK: -- Action
 	
 	private func executeDidEndBlock() {
 		self.didEndBlock?()
 		self.didEndBlock = nil
-		self.removeObserver(self, forKeyPath: #keyPath(EndHandlableOperation.isCancelled))
-		self.removeObserver(self, forKeyPath: #keyPath(EndHandlableOperation.isFinished))
 	}
 	
 	/**
@@ -77,7 +80,7 @@ extension OperationQueue {
 			- op: Operation to add
 			- didEndBlock: Block which will be set as didEndBlock of op -- it'll be called when the op ended
 	*/
-	open func addOperation(_ op: EndHandlableOperation, didEndBlock: (() -> Void)? = nil) {
+	open func addOperation(_ op: EndHandlableOperation, didEndBlock: (() -> Void)?) {
 		op.didEndBlock = didEndBlock
 		self.addOperation(op)
 	}

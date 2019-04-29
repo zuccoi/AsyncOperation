@@ -1,4 +1,8 @@
 language: objective-c
 
 script:
-  - xcodebuild test -project AsyncOperation/AsyncOperation.xcodeproj -scheme AsyncOperationTests -sdk iphonesimulator12.2 -destination 'platform=iOS Simulator,name=iPhone 8'
+  - xcodebuild test -project AsyncOperation/AsyncOperation.xcodeproj -scheme AsyncOperation -sdk iphonesimulator
+#  - xcodebuild test -project AsyncOperation/AsyncOperation.xcodeproj -scheme AsyncOperation -sdk macosx
+#  - xcodebuild test -project AsyncOperation/AsyncOperation.xcodeproj -scheme AsyncOperation -sdk appletvsimulator
+#  - xcodebuild test -project AsyncOperation/AsyncOperation.xcodeproj -scheme AsyncOperation -sdk watchsimulator
+  - xcodebuild test -project AsyncOperation/AsyncOperation.xcodeproj -scheme AsyncOperation -sdk iphonesimulator -destination 'platform=iOS Simulator,name=iPhone 6,OS=11.0.1'

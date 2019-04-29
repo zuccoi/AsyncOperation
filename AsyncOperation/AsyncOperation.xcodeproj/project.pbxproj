@@ -43,6 +43,11 @@
 		EB3BA1EB2275C15000F5855A /* EndHandlableOperationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndHandlableOperationTests.swift; sourceTree = "<group>"; };
 		EB3BA1EF2275C9AA00F5855A /* TestAsyncOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestAsyncOperation.swift; sourceTree = "<group>"; };
 		EB3BA1F12275DE4000F5855A /* AsyncBlockOperationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncBlockOperationTests.swift; sourceTree = "<group>"; };
+		EB8E770E2276C59E00329C80 /* AsyncOperation.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = AsyncOperation.xcconfig; path = Configuration/AsyncOperation.xcconfig; sourceTree = "<group>"; };
+		EB8E770F2276C5EA00329C80 /* Base.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Base.xcconfig; path = Configuration/Base.xcconfig; sourceTree = "<group>"; };
+		EB8E77102276C5EA00329C80 /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Release.xcconfig; path = Configuration/Release.xcconfig; sourceTree = "<group>"; };
+		EB8E77112276C5EA00329C80 /* Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Debug.xcconfig; path = Configuration/Debug.xcconfig; sourceTree = "<group>"; };
+		EB8E77122276C5EA00329C80 /* AsyncOperationTests.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = AsyncOperationTests.xcconfig; path = Configuration/AsyncOperationTests.xcconfig; sourceTree = "<group>"; };
 		EBAF51012276216B008768F5 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		EBAF51022276216B008768F5 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -73,6 +78,7 @@
 				EBAF51022276216B008768F5 /* README.md */,
 				EB3BA1A62275B85600F5855A /* AsyncOperation */,
 				EB3BA1B12275B85600F5855A /* AsyncOperationTests */,
+				EB8E770D2276C56500329C80 /* Configuration */,
 				EB3BA1A52275B85600F5855A /* Products */,
 			);
 			sourceTree = "<group>";
@@ -117,6 +123,18 @@
 				EB3BA1E92275BAB500F5855A /* Result+RLExt.swift */,
 			);
 			path = Source;
+			sourceTree = "<group>";
+		};
+		EB8E770D2276C56500329C80 /* Configuration */ = {
+			isa = PBXGroup;
+			children = (
+				EB8E770F2276C5EA00329C80 /* Base.xcconfig */,
+				EB8E77112276C5EA00329C80 /* Debug.xcconfig */,
+				EB8E77102276C5EA00329C80 /* Release.xcconfig */,
+				EB8E770E2276C59E00329C80 /* AsyncOperation.xcconfig */,
+				EB8E77122276C5EA00329C80 /* AsyncOperationTests.xcconfig */,
+			);
+			name = Configuration;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -258,6 +276,7 @@
 /* Begin XCBuildConfiguration section */
 		EB3BA1B62275B85600F5855A /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = EB8E77112276C5EA00329C80 /* Debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -322,6 +341,7 @@
 		};
 		EB3BA1B72275B85600F5855A /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = EB8E77102276C5EA00329C80 /* Release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -380,64 +400,79 @@
 		};
 		EB3BA1B92275B85600F5855A /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = EB8E770E2276C59E00329C80 /* AsyncOperation.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = X93Q3RKV3W;
+				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = AsyncOperation/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				PRODUCT_BUNDLE_IDENTIFIER = run.runloop.AsyncOperation;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = "";
 				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "macosx iphoneos iphonesimulator watchos watchsimulator appletvos appletvsimulator";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				TVOS_DEPLOYMENT_TARGET = 9.0;
+				WATCHOS_DEPLOYMENT_TARGET = 2.0;
 			};
 			name = Debug;
 		};
 		EB3BA1BA2275B85600F5855A /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = EB8E770E2276C59E00329C80 /* AsyncOperation.xcconfig */;
 			buildSettings = {
 				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = YES;
 				DEFINES_MODULE = YES;
-				DEVELOPMENT_TEAM = X93Q3RKV3W;
+				DEVELOPMENT_TEAM = "";
 				DYLIB_COMPATIBILITY_VERSION = 1;
 				DYLIB_CURRENT_VERSION = 1;
 				DYLIB_INSTALL_NAME_BASE = "@rpath";
 				INFOPLIST_FILE = AsyncOperation/Info.plist;
 				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
-				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 					"@loader_path/Frameworks",
 				);
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				PRODUCT_BUNDLE_IDENTIFIER = run.runloop.AsyncOperation;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
+				SDKROOT = "";
 				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "macosx iphoneos iphonesimulator watchos watchsimulator appletvos appletvsimulator";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
+				TVOS_DEPLOYMENT_TARGET = 9.0;
+				WATCHOS_DEPLOYMENT_TARGET = 2.0;
 			};
 			name = Release;
 		};
 		EB3BA1BC2275B85600F5855A /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = EB8E77122276C5EA00329C80 /* AsyncOperationTests.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = X93Q3RKV3W;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = AsyncOperationTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -445,6 +480,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = run.runloop.AsyncOperationTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -452,12 +488,15 @@
 		};
 		EB3BA1BD2275B85600F5855A /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = EB8E77122276C5EA00329C80 /* AsyncOperationTests.xcconfig */;
 			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = NO;
+				CODE_SIGN_IDENTITY = "";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = X93Q3RKV3W;
+				COPY_PHASE_STRIP = YES;
+				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = AsyncOperationTests/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 12.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -465,6 +504,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = run.runloop.AsyncOperationTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

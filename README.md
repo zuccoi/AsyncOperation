@@ -42,7 +42,7 @@ op.start {
 ## Requirements
 
 - Swift 5.0 or later
-- iOS 12.2 or later
+- iOS 11.0.1 or later
 - Mac OS T.B.D.
 - watchOS T.B.D.
 - tvOS T.B.D.

@@ -18,17 +18,25 @@ open class EndHandlableOperation: Operation {
 	*/
 	open var didEndBlock: (() -> Void)?
 	
+	private var isCancelledObservation: NSKeyValueObservation?
+	private var isFinishedObservationn: NSKeyValueObservation?
+	
 	// MARK: -- Instance
 	
 	public override init() {
 		super.init()
-		self.addObserver(self, forKeyPath: #keyPath(EndHandlableOperation.isCancelled), options: [.old, .new], context: nil)
-		self.addObserver(self, forKeyPath: #keyPath(EndHandlableOperation.isFinished), options: [.old, .new], context: nil)
-	}
-	
-	deinit {
-		self.removeObserver(self, forKeyPath: #keyPath(EndHandlableOperation.isCancelled))
-		self.removeObserver(self, forKeyPath: #keyPath(EndHandlableOperation.isFinished))
+		let changeHandler: (EndHandlableOperation, NSKeyValueObservedChange<Bool>) -> Void = {[weak self] (op, change) in
+			guard
+				let self = self,
+				let new = change.newValue, new == true,
+				let old = change.oldValue, old == false
+			else {
+				return
+			}
+			self.executeDidEndBlock()
+		}
+		self.isCancelledObservation = self.observe(\EndHandlableOperation.isCancelled, options: [.new, .old], changeHandler: changeHandler)
+		self.isFinishedObservationn = self.observe(\EndHandlableOperation.isFinished, options: [.new, .old], changeHandler: changeHandler)
 	}
 	
 	// MARK: -- Action
@@ -47,27 +55,6 @@ open class EndHandlableOperation: Operation {
 	open func start(didEndBlock: (() -> Void)?) {
 		self.didEndBlock = didEndBlock
 		self.start()
-	}
-	
-	override open func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
-		guard
-			let keyPath = keyPath,
-			let change = change,
-			let object = object as? EndHandlableOperation, object === self
-		else {
-			return
-		}
-		switch keyPath {
-		case #keyPath(EndHandlableOperation.isCancelled), #keyPath(EndHandlableOperation.isFinished):
-			guard
-				let new = (change[NSKeyValueChangeKey.newKey] as? NSNumber)?.boolValue, new == true,
-				let old = (change[NSKeyValueChangeKey.oldKey] as? NSNumber)?.boolValue, old == false
-			else {
-				return
-			}
-			self.executeDidEndBlock()
-		default: break
-		}
 	}
 }
 

@@ -44,6 +44,8 @@ open class EndHandlableOperation: Operation {
 	private func executeDidEndBlock() {
 		self.didEndBlock?()
 		self.didEndBlock = nil
+		self.isCancelledObservation = nil
+		self.isFinishedObservationn = nil
 	}
 	
 	/**

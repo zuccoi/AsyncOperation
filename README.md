@@ -53,7 +53,9 @@ op.start {
 Not supported yet.
 
 #### [CocoaPods](https://github.com/cocoapods/cocoapods)
-Not supported yet.
+
+- Insert `pod 'ZUAsyncOperation'` to your Podfile.
+- Run `pod install`.
 
 #### Manually
 Copy files under Source folder to your project (e.g. AsyncOperation.swift).

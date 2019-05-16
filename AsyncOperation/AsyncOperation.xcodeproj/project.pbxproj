@@ -43,6 +43,7 @@
 		EB3BA1EB2275C15000F5855A /* EndHandlableOperationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndHandlableOperationTests.swift; sourceTree = "<group>"; };
 		EB3BA1EF2275C9AA00F5855A /* TestAsyncOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestAsyncOperation.swift; sourceTree = "<group>"; };
 		EB3BA1F12275DE4000F5855A /* AsyncBlockOperationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncBlockOperationTests.swift; sourceTree = "<group>"; };
+		EB44796D228CFC1700910F08 /* ZUAsyncOperation.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; name = ZUAsyncOperation.podspec; path = ../ZUAsyncOperation.podspec; sourceTree = "<group>"; };
 		EB8E770E2276C59E00329C80 /* AsyncOperation.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = AsyncOperation.xcconfig; path = Configuration/AsyncOperation.xcconfig; sourceTree = "<group>"; };
 		EB8E770F2276C5EA00329C80 /* Base.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Base.xcconfig; path = Configuration/Base.xcconfig; sourceTree = "<group>"; };
 		EB8E77102276C5EA00329C80 /* Release.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = Release.xcconfig; path = Configuration/Release.xcconfig; sourceTree = "<group>"; };
@@ -76,6 +77,7 @@
 			children = (
 				EBAF51012276216B008768F5 /* LICENSE */,
 				EBAF51022276216B008768F5 /* README.md */,
+				EB44796D228CFC1700910F08 /* ZUAsyncOperation.podspec */,
 				EB3BA1A62275B85600F5855A /* AsyncOperation */,
 				EB3BA1B12275B85600F5855A /* AsyncOperationTests */,
 				EB8E770D2276C56500329C80 /* Configuration */,

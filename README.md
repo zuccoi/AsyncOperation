@@ -50,7 +50,10 @@ op.start {
 ## Installation
 
 #### [Carthage](https://github.com/Carthage/Carthage)
-Not supported yet.
+
+- Insert `github "zuccoi/AsyncOperation"` to your Cartfile.
+- Run `carthage update`.
+- Link your app with `AsyncOperation.framework` in `Carthage/Build`.
 
 #### [CocoaPods](https://github.com/cocoapods/cocoapods)
 

@@ -190,9 +190,7 @@ class AsyncOperationTests: XCTestCase {
 		queue.addOperation(op2) {
 			do {
 				_ = try op2.getResult()
-				DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-					exp.fulfill()
-				}
+				exp.fulfill()
 			} catch {}
 		}
 		XCTAssertEqual(queue.operationCount, 2)
@@ -203,6 +201,56 @@ class AsyncOperationTests: XCTestCase {
 		self.waitForExpectations(timeout: 10) { error in
 			XCTAssertNil(error, "ERROR: \(error!)")
 			XCTAssertEqual(queue.operationCount, 0)
+		}
+	}
+	
+	func test_notStartedOperationIsRemovedFromQueueAfterCancel() {
+		let expDesc = "\(type(of: self)).\(#function) \(#line)"
+		let exp = expectation(description: expDesc)
+		
+		// Make queue
+		let queue = OperationQueue()
+		queue.maxConcurrentOperationCount = 1
+		
+		// Add operation to the queue
+		let op1 = TestAsyncOperation(timeInterval: 1)
+		queue.addOperation(op1) {
+			do {
+				_ = try op1.getResult()
+				exp.fulfill()
+			} catch {}
+		}
+		XCTAssertEqual(queue.operationCount, 1)
+		
+		// Add another operation
+		var op2WasCancelled = false
+		let op2 = TestAsyncOperation(timeInterval: 1)
+		queue.addOperation(op2) {
+			do {
+				_ = try op2.getResult()
+			} catch AsyncOperationError.cancelled(_) {
+				op2WasCancelled = true
+			} catch {}
+		}
+		XCTAssertEqual(queue.operationCount, 2)
+		
+		// Cancel op2
+		op2.cancel(canceller: .application)
+		
+		self.waitForExpectations(timeout: 10) { error in
+			XCTAssertNil(error, "ERROR: \(error!)")
+			XCTAssertTrue(op2WasCancelled)
+			XCTAssertEqual(queue.operationCount, 0)
+			for anOp in queue.operations {
+				switch anOp {
+				case op1:
+					XCTFail("op1 is NOT removed from the queue")
+				case op2:
+					XCTFail("op2 is NOT removed from the queue")
+					XCTAssertTrue(op2.isFinished)
+				default: break
+				}
+			}
 		}
 	}
 }

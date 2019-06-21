@@ -163,7 +163,12 @@ open class AsyncOperation<Success>: EndHandlableOperation {
 	}
 	
 	open override var isCancelled: Bool {
-		return self.state == .cancelled
+		return self.state == .cancelled || {
+			switch self.error {
+			case .some(AsyncOperationError.cancelled(_)): return true
+			default: return false
+			}
+		}()
 	}
 	
 	open override var isAsynchronous: Bool {
@@ -243,6 +248,7 @@ open class AsyncOperation<Success>: EndHandlableOperation {
 		self.result = Result.failure(AsyncOperationError.cancelled(canceller))
 		self.state = .cancelled
 		super.cancel()
+		self.state = .finished
 		self.completionBlock = nil
 	}
 	

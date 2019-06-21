@@ -10,7 +10,17 @@ import XCTest
 
 class AsyncOperationTests: XCTestCase {
 	
-	func test_didEndBlockWillBeCalledWhenCompletion() {
+	func test_completionBlockIsCalledWhenCancelledBeforeStart() {
+		var called = false
+		let op = TestAsyncOperation(timeInterval: 1)
+		op.completionBlock = {
+			called = true
+		}
+		op.cancel()
+		XCTAssertTrue(called)
+	}
+	
+	func test_completionBlockWillBeCalledWhenCompleted() {
 		let expDesc = "\(type(of: self)).\(#function) \(#line)"
 		let exp = expectation(description: expDesc)
 		
@@ -34,7 +44,7 @@ class AsyncOperationTests: XCTestCase {
 		}
 	}
 	
-	func test_didEndBlockWillReleasedAfterExecution() {
+	func test_completionBlockWillBeReleasedWhenCompleted() {
 		let expDesc = "\(type(of: self)).\(#function) \(#line)"
 		let exp = expectation(description: expDesc)
 		
@@ -45,8 +55,16 @@ class AsyncOperationTests: XCTestCase {
 		
 		self.waitForExpectations(timeout: 2) { error in
 			XCTAssertNil(error, "ERROR: \(error!)")
-			XCTAssertNil(op.didEndBlock)
+			XCTAssertNil(op.completionBlock)
 		}
+	}
+	
+	func test_completionBlockWillBeReleasedWhenCancelled() {
+		let op = TestAsyncOperation(timeInterval: 1)
+		op.completionBlock = {}
+		XCTAssertNotNil(op.completionBlock)
+		op.cancel()
+		XCTAssertNil(op.completionBlock)
 	}
 	
 	func test_success() {
@@ -130,7 +148,7 @@ class AsyncOperationTests: XCTestCase {
 		}
 	}
 	
-	func test_canellerWillBeDefinedEvenIfCancelWasCalled() {
+	func test_cancellerWillBeDefinedEvenIfCancelWasCalled() {
 		let expDesc = "\(type(of: self)).\(#function) \(#line)"
 		let exp = expectation(description: expDesc)
 		

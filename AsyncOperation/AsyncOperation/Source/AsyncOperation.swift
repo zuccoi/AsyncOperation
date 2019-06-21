@@ -42,7 +42,7 @@ public enum AsyncOperationError: Swift.Error {
 }
 
 
-open class AsyncOperation<Success>: EndHandlableOperation {
+open class AsyncOperation<Success>: Operation {
 	public typealias Failure = Swift.Error
 	public typealias Result = Swift.Result<Success, Failure>
 	
@@ -61,10 +61,10 @@ open class AsyncOperation<Success>: EndHandlableOperation {
 		case cancelled = "isCancelled"
 	}
 	
-	/// State of this operation
-	private(set) var state: State = State.waiting {
+	/// Status of this operation
+	private(set) var status: State = State.waiting {
 		willSet {
-			let oldValue = self.state
+			let oldValue = self.status
 			let assert = {
 				assertionFailure("Invalid change from \(oldValue) to \(newValue)")
 			}
@@ -97,7 +97,7 @@ open class AsyncOperation<Success>: EndHandlableOperation {
 			self.willChangeValue(forKey: State.cancelled.rawValue)
 		}
 		didSet {
-			switch self.state {
+			switch self.status {
 			case .waiting: break
 			case .ready: break
 			case .executing:
@@ -139,31 +139,31 @@ open class AsyncOperation<Success>: EndHandlableOperation {
 	}
 	
 	open override var isReady: Bool {
-		if self.state == .waiting {
+		if self.status == .waiting {
 			return super.isReady
 		} else {
-			return self.state == .ready
+			return self.status == .ready
 		}
 	}
 	
 	open override var isExecuting: Bool {
-		if self.state == .waiting {
+		if self.status == .waiting {
 			return super.isExecuting
 		} else {
-			return self.state == .executing
+			return self.status == .executing
 		}
 	}
 	
 	open override var isFinished: Bool {
-		if self.state == .waiting {
+		if self.status == .waiting {
 			return super.isFinished
 		} else {
-			return self.state == .finished
+			return self.status == .finished
 		}
 	}
 	
 	open override var isCancelled: Bool {
-		return self.state == .cancelled || {
+		return self.status == .cancelled || {
 			switch self.error {
 			case .some(AsyncOperationError.cancelled(_)): return true
 			default: return false
@@ -208,8 +208,11 @@ open class AsyncOperation<Success>: EndHandlableOperation {
 			- result: Result of this operation
 	*/
 	open func finish(_ result: Result?) {
+		let completionBlock = self.completionBlock
+		self.completionBlock = nil
 		self.result = result
-		self.state = .finished
+		self.status = .finished
+		completionBlock?()
 	}
 	
 	/**
@@ -242,18 +245,30 @@ open class AsyncOperation<Success>: EndHandlableOperation {
 		This function call cancel() function of superclass
 	*/
 	open func cancel(canceller: AsyncOperationCanceller) {
-		if self.state == .finished || self.state == .cancelled {
+		// Check status
+		if self.status == .finished || self.status == .cancelled {
 			return
 		}
+		
+		// Cancel
 		self.result = Result.failure(AsyncOperationError.cancelled(canceller))
-		self.state = .cancelled
+		self.status = .cancelled
 		super.cancel()
-		self.state = .finished
-		self.completionBlock = nil
 	}
 	
 	open override func cancel() {
 		self.cancel(canceller: .unknown)
+	}
+	
+	/**
+		Start the receiver with specified completionBlock
+		
+		- parameters:
+			- completionBlock: Block which will be set as completionBlock of the receiver
+	*/
+	open func start(completionBlock: (() -> Void)?) {
+		self.completionBlock = completionBlock
+		self.start()
 	}
 	
 	open override func start() {
@@ -283,7 +298,7 @@ open class AsyncOperation<Success>: EndHandlableOperation {
 			self.finish(self.result)
 			return
 		}
-		self.state = .executing
+		self.status = .executing
 	}
 	
 	/**
@@ -319,5 +334,20 @@ extension AsyncOperation where Success == AsyncOperationSuccess {
 	*/
 	open func complete() {
 		self.complete(Success())
+	}
+}
+
+
+extension OperationQueue {
+	/**
+		Add AsyncOperation with specified completionBlock
+		
+		- parameters:
+			- op: Operation to add
+			- completionBlock: Block which will be set as completionBlock of op
+	*/
+	open func addOperation(_ op: Operation, completionBlock: (() -> Void)?) {
+		op.completionBlock = completionBlock
+		self.addOperation(op)
 	}
 }

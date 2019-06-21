@@ -11,10 +11,8 @@
 		EB3BA1B32275B85600F5855A /* AsyncOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB3BA1B22275B85600F5855A /* AsyncOperationTests.swift */; };
 		EB3BA1B52275B85600F5855A /* AsyncOperation.h in Headers */ = {isa = PBXBuildFile; fileRef = EB3BA1A72275B85600F5855A /* AsyncOperation.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		EB3BA1C22275B8BA00F5855A /* AsyncBlockOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB3BA1BF2275B8BA00F5855A /* AsyncBlockOperation.swift */; };
-		EB3BA1C32275B8BA00F5855A /* EndHandlableOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB3BA1C02275B8BA00F5855A /* EndHandlableOperation.swift */; };
 		EB3BA1C42275B8BA00F5855A /* AsyncOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB3BA1C12275B8BA00F5855A /* AsyncOperation.swift */; };
 		EB3BA1EA2275BAB600F5855A /* Result+RLExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB3BA1E92275BAB500F5855A /* Result+RLExt.swift */; };
-		EB3BA1EC2275C15000F5855A /* EndHandlableOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB3BA1EB2275C15000F5855A /* EndHandlableOperationTests.swift */; };
 		EB3BA1F02275C9AA00F5855A /* TestAsyncOperation.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB3BA1EF2275C9AA00F5855A /* TestAsyncOperation.swift */; };
 		EB3BA1F22275DE4000F5855A /* AsyncBlockOperationTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = EB3BA1F12275DE4000F5855A /* AsyncBlockOperationTests.swift */; };
 /* End PBXBuildFile section */
@@ -37,10 +35,8 @@
 		EB3BA1B22275B85600F5855A /* AsyncOperationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncOperationTests.swift; sourceTree = "<group>"; };
 		EB3BA1B42275B85600F5855A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		EB3BA1BF2275B8BA00F5855A /* AsyncBlockOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AsyncBlockOperation.swift; sourceTree = "<group>"; };
-		EB3BA1C02275B8BA00F5855A /* EndHandlableOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EndHandlableOperation.swift; sourceTree = "<group>"; };
 		EB3BA1C12275B8BA00F5855A /* AsyncOperation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AsyncOperation.swift; sourceTree = "<group>"; };
 		EB3BA1E92275BAB500F5855A /* Result+RLExt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "Result+RLExt.swift"; sourceTree = "<group>"; };
-		EB3BA1EB2275C15000F5855A /* EndHandlableOperationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EndHandlableOperationTests.swift; sourceTree = "<group>"; };
 		EB3BA1EF2275C9AA00F5855A /* TestAsyncOperation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestAsyncOperation.swift; sourceTree = "<group>"; };
 		EB3BA1F12275DE4000F5855A /* AsyncBlockOperationTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncBlockOperationTests.swift; sourceTree = "<group>"; };
 		EB44796D228CFC1700910F08 /* ZUAsyncOperation.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; name = ZUAsyncOperation.podspec; path = ../ZUAsyncOperation.podspec; sourceTree = "<group>"; };
@@ -109,7 +105,6 @@
 			children = (
 				EB3BA1F12275DE4000F5855A /* AsyncBlockOperationTests.swift */,
 				EB3BA1B22275B85600F5855A /* AsyncOperationTests.swift */,
-				EB3BA1EB2275C15000F5855A /* EndHandlableOperationTests.swift */,
 				EB3BA1B42275B85600F5855A /* Info.plist */,
 				EB3BA1EF2275C9AA00F5855A /* TestAsyncOperation.swift */,
 			);
@@ -121,7 +116,6 @@
 			children = (
 				EB3BA1BF2275B8BA00F5855A /* AsyncBlockOperation.swift */,
 				EB3BA1C12275B8BA00F5855A /* AsyncOperation.swift */,
-				EB3BA1C02275B8BA00F5855A /* EndHandlableOperation.swift */,
 				EB3BA1E92275BAB500F5855A /* Result+RLExt.swift */,
 			);
 			path = Source;
@@ -250,7 +244,6 @@
 				EB3BA1C22275B8BA00F5855A /* AsyncBlockOperation.swift in Sources */,
 				EB3BA1C42275B8BA00F5855A /* AsyncOperation.swift in Sources */,
 				EB3BA1EA2275BAB600F5855A /* Result+RLExt.swift in Sources */,
-				EB3BA1C32275B8BA00F5855A /* EndHandlableOperation.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -258,7 +251,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EB3BA1EC2275C15000F5855A /* EndHandlableOperationTests.swift in Sources */,
 				EB3BA1F02275C9AA00F5855A /* TestAsyncOperation.swift in Sources */,
 				EB3BA1F22275DE4000F5855A /* AsyncBlockOperationTests.swift in Sources */,
 				EB3BA1B32275B85600F5855A /* AsyncOperationTests.swift in Sources */,

@@ -72,6 +72,7 @@ class AsyncBlockOperationTests: XCTestCase {
 			let op = op
 			DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
 				if op.isCancelled {
+					op.finish(op.result)
 					return
 				}
 				op.complete()
@@ -108,7 +109,7 @@ class AsyncBlockOperationTests: XCTestCase {
 				op.complete()
 			})
 		})
-		op.didEndBlock = {
+		op.completionBlock = {
 			do {
 				_ = try op.getResult()
 				exp.fulfill()

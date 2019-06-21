@@ -23,7 +23,7 @@ class MyOperation: AsyncOperation<MyOperationSuccess> {
 
 // Make `MyOperation` instance
 let op = MyOperation()
-// Start the operation with `didEndBlock` which is called when the operation is cancelled or finished. Alternatively, you can add the operation into `OperationQueue`.
+// Start the operation with `completionBlock`. Alternatively, you can add the operation into `OperationQueue`.
 op.start {
     do {
         let result = try op.getResult() // Type of 'result' is `MyOperationSuccess`

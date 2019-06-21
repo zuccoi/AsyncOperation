@@ -171,4 +171,38 @@ class AsyncOperationTests: XCTestCase {
 			XCTAssertNil(error, "ERROR: \(error!)")
 		}
 	}
+	
+	func test_operationIsRemovedFromQueueAfterCacel() {
+		let expDesc = "\(type(of: self)).\(#function) \(#line)"
+		let exp = expectation(description: expDesc)
+		
+		// Make queue
+		let queue = OperationQueue()
+		queue.maxConcurrentOperationCount = 1
+		
+		// Add operation to the queue
+		let op = TestAsyncOperation(timeInterval: 1)
+		queue.addOperation(op) {}
+		XCTAssertEqual(queue.operationCount, 1)
+		
+		// Add another operation
+		let op2 = TestAsyncOperation(timeInterval: 1)
+		queue.addOperation(op2) {
+			do {
+				_ = try op2.getResult()
+				DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+					exp.fulfill()
+				}
+			} catch {}
+		}
+		XCTAssertEqual(queue.operationCount, 2)
+		
+		// Cancel the operation
+		op.cancel(canceller: .application)
+		
+		self.waitForExpectations(timeout: 10) { error in
+			XCTAssertNil(error, "ERROR: \(error!)")
+			XCTAssertEqual(queue.operationCount, 0)
+		}
+	}
 }

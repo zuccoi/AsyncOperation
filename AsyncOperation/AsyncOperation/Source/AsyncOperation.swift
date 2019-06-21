@@ -203,9 +203,6 @@ open class AsyncOperation<Success>: EndHandlableOperation {
 			- result: Result of this operation
 	*/
 	open func finish(_ result: Result?) {
-		if self.state == .cancelled {
-			return
-		}
 		self.result = result
 		self.state = .finished
 	}
@@ -255,11 +252,15 @@ open class AsyncOperation<Success>: EndHandlableOperation {
 	
 	open override func start() {
 		if self.isCancelled {
-			self.finish(nil)
+			self.finish(.failure(self.error ?? AsyncOperationError.cancelled(.middleware)))
 			return
 		}
 		if !self.isReady {
 			NSLog("Cannot start operation cos' it is not ready to start")
+			return
+		}
+		if self.isFinished {
+			self.finish(self.result)
 			return
 		}
 		type(of: self).dispatchQueue.async {
@@ -268,9 +269,15 @@ open class AsyncOperation<Success>: EndHandlableOperation {
 	}
 	
 	open override func main() {
-		if !self.isCancelled && !self.isFinished {
-			self.state = .executing
+		if self.isCancelled {
+			self.finish(.failure(self.error ?? AsyncOperationError.cancelled(.middleware)))
+			return
 		}
+		if self.isFinished {
+			self.finish(self.result)
+			return
+		}
+		self.state = .executing
 	}
 	
 	/**

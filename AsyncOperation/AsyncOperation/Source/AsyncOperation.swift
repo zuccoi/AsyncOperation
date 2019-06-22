@@ -5,6 +5,9 @@
 */
 
 import Foundation
+#if os(iOS) || os(tvOS)
+import UIKit
+#endif
 
 
 public struct AsyncOperationSuccess {}
@@ -133,6 +136,11 @@ open class AsyncOperation<Success>: Operation {
 		return nil
 	}
 	
+#if os(iOS) || os(tvOS)
+	private var backgroundTaskID: UIBackgroundTaskIdentifier?
+	private var application: UIApplication?
+#endif
+	
 	/// Flag that indicates whether this operation succeeded
 	open var isCompleted: Bool {
 		return self.result?.isSuccess ?? false
@@ -174,6 +182,35 @@ open class AsyncOperation<Success>: Operation {
 	open override var isAsynchronous: Bool {
 		return true
 	}
+	
+	// MARK: -- Background Task
+	
+#if os(iOS) || os(tvOS)
+	@discardableResult public func beginBackgroundTask(on app: UIApplication) -> Self {
+		if self.backgroundTaskID != nil {
+			return self
+		}
+		self.application = app
+		self.backgroundTaskID = app.beginBackgroundTask(withName: self.name, expirationHandler: {[weak self] in
+			guard let self = self else { return }
+			self.cancel(canceller: .system)
+		})
+		return self
+	}
+	
+	private func endBackGroundTask() {
+		if let backgroundTaskID = self.backgroundTaskID,
+			let app = self.application
+		{
+			app.endBackgroundTask(backgroundTaskID)
+			self.backgroundTaskID = nil
+		}
+	}
+	
+	deinit {
+		self.endBackGroundTask()
+	}
+#endif
 	
 	// MARK: -- Operation
 	

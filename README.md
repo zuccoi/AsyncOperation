@@ -36,7 +36,25 @@ op.start {
 }
 ```
 
-## More
+## Background Task
+You can start background task for `AsyncOperation` easily.
+```
+let op = MyOperation()
+op.beginBackgroundTask(on: UIApplication.shared).start {
+    do {
+        let result = try op.getResult()
+        // Do something with reuslt…
+    } catch AsyncOperationError.cancelled(let canceller) {
+        // Handle cancellation…
+    }
+    } catch {
+        // Handle other errors…
+    }
+}
+```
+When background task is expired, the operation calls `self.cancel(canceller: .system)`
+
+## AsyncBlockOperation
 `AsyncBlockOperation` is provided to make an operation with block.
 
 ## Requirements

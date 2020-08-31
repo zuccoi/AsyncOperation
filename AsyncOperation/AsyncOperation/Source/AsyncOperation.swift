@@ -49,7 +49,7 @@ open class AsyncOperation<Success>: Operation {
 	public typealias Failure = Swift.Error
 	public typealias Result = Swift.Result<Success, Failure>
 	
-	// MARK: -- Property
+	// MARK: Property
 	
 	/// Operation queue on which instance is excuted when it starts
 	open class var dispatchQueue: DispatchQueue {
@@ -183,7 +183,7 @@ open class AsyncOperation<Success>: Operation {
 		return true
 	}
 	
-	// MARK: -- Background Task
+	// MARK: Background Task
 	
 #if os(iOS) || os(tvOS)
 	@discardableResult public func beginBackgroundTask(on app: UIApplication) -> Self {
@@ -212,7 +212,7 @@ open class AsyncOperation<Success>: Operation {
 	}
 #endif
 	
-	// MARK: -- Operation
+	// MARK: Operation
 	
 	/// Called before isExecuting flag will be raised
 	open func willStartExecuting() {}

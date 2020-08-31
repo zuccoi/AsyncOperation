@@ -12,12 +12,12 @@ public typealias AsyncBlock = (AsyncBlockOperation) -> Void
 
 final public class AsyncBlockOperation: AsyncOperation<AsyncOperationSuccess> {
 	
-	// MARK: -- Property
+	// MARK: Property
 	
 	/// Block associated with this operation
 	public let block: AsyncBlock
 	
-	// MARK: -- Instance
+	// MARK: Instance
 	
 	/**
 		Initialize the receiver with block
@@ -29,7 +29,7 @@ final public class AsyncBlockOperation: AsyncOperation<AsyncOperationSuccess> {
 		self.block = block
 	}
 	
-	// MARK: -- Operation
+	// MARK: Operation
 	
 	public override func didStartExecuting() {
 		self.block(self)

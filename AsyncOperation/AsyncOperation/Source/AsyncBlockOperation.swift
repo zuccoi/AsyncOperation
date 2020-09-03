@@ -15,7 +15,7 @@ final public class AsyncBlockOperation: AsyncOperation<AsyncOperationSuccess> {
 	// MARK: Property
 	
 	/// Block associated with this operation
-	public let block: AsyncBlock
+	private(set) var block: AsyncBlock?
 	
 	// MARK: Instance
 	
@@ -35,6 +35,16 @@ final public class AsyncBlockOperation: AsyncOperation<AsyncOperationSuccess> {
 	// MARK: Operation
 	
 	public override func didStartExecuting() {
-		self.block(self)
+		super.didStartExecuting()
+		guard let block = self.block else {
+			self.complete()
+			return
+		}
+		block(self)
+	}
+	
+	public override func didStopExecuting() {
+		self.block = nil
+		super.didStopExecuting()
 	}
 }

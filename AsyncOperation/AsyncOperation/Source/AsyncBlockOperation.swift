@@ -23,10 +23,13 @@ final public class AsyncBlockOperation: AsyncOperation<AsyncOperationSuccess> {
 		Initialize the receiver with block
 		
 		- parameters:
+			- queuePriority: The execution priority of the operation in an operation queue
 			- block: Block associated with the receiver
 	*/
-	public init(block: @escaping AsyncBlock) {
+	public init(queuePriority: Operation.QueuePriority = .normal, block: @escaping AsyncBlock) {
 		self.block = block
+		super.init()
+		self.queuePriority = queuePriority
 	}
 	
 	// MARK: Operation

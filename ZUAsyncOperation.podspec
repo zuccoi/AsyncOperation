@@ -1,6 +1,6 @@
 Pod::Spec.new do |spec|
   spec.name = "ZUAsyncOperation"
-  spec.version = "1.3"
+  spec.version = "1.4"
   spec.summary = "Generic subclass of Operation to get result asynchronously."
   spec.description = <<-DESC
   AsyncOperation is a generic subclass of Operation to get Swift.Result asynchronously.
@@ -9,8 +9,8 @@ Pod::Spec.new do |spec|
   spec.license = { :type => "MIT", :file => "LICENSE" }
   spec.author = "zuccoi"
   spec.social_media_url = "https://twitter.com/zuccoi"
-  spec.ios.deployment_target = "11.0.1"
-  # spec.osx.deployment_target = "10.7"
+  spec.ios.deployment_target = "11.0"
+  # spec.osx.deployment_target = "10.10"
   # spec.watchos.deployment_target = "2.0"
   # spec.tvos.deployment_target = "9.0"
   spec.source_files = "AsyncOperation/AsyncOperation/Source/*.{swift}"

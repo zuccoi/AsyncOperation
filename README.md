@@ -10,8 +10,13 @@ struct MyOperationSuccess {
     // …
 }
 
-// Make subclass of AsyncOperation whose success type is `MyOperationSuccess`
-class MyOperation: AsyncOperation<MyOperationSuccess> {
+// Define error type
+enum MyOperationError: AsyncOperationError {
+    // …
+}
+
+// Make subclass of AsyncOperation whose success type is `MyOperationSuccess` and error type is `MyOperationError`
+class MyOperation: AsyncOperation<MyOperationSuccess, MyOperationError> {
     // …
     
     override func didStartExecuting() {
@@ -28,9 +33,9 @@ op.start {
     do {
         let result = try op.getResult() // Type of 'result' is `MyOperationSuccess`
         // Do something with result…
-    } catch AsyncOperationError.cancelled(let canceller) {
+    } catch MyOperationError.cancelled(let canceller) {
         // Handle cancellation…
-    } catch {
+    } catch {}
         // Handle other errors…
     }
 }
@@ -44,7 +49,7 @@ op.beginBackgroundTask(on: UIApplication.shared).start {
     do {
         let result = try op.getResult()
         // Do something with reuslt…
-    } catch AsyncOperationError.cancelled(let canceller) {
+    } catch MyOperationError.cancelled(let canceller) {
         // Handle cancellation…
     } catch {
         // Handle other errors…

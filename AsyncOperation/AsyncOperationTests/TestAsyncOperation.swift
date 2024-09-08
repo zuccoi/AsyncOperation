@@ -14,17 +14,20 @@ struct TestAsyncOperationSuccess {
 }
 
 
-class TestAsyncOperation: AsyncOperation<TestAsyncOperationSuccess> {
+enum TestAsyncOperationError: AsyncOperationError {
+	case missingResult
+	case cancelled(AsyncOperationCanceller)
+	case tooLong
 	
-	enum Error: Int, Swift.Error {
-		case tooLong
-		
-		var _code: Int {
-			switch self {
-			case .tooLong: return 0
-			}
-		}
+	static var missingResultError: Self = .missingResultError
+	static func cancelledError(_ canceller: AsyncOperationCanceller) -> Self { .cancelled(canceller) }
+	var isCancelledError: Bool {
+		guard case .cancelled = self else { return false }
+		return true
 	}
+}
+
+class TestAsyncOperation: AsyncOperation<TestAsyncOperationSuccess, TestAsyncOperationError> {
 	
 	static let maxTimeInterval: TimeInterval = 3
 	let timeInterval: TimeInterval
@@ -59,7 +62,7 @@ class TestAsyncOperation: AsyncOperation<TestAsyncOperationSuccess> {
 				self.finish(self.result)
 				return
 			}
-			self.fail(Error.tooLong)
+			self.fail(.tooLong)
 		}
 	}
 }

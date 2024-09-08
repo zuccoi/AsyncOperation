@@ -22,32 +22,15 @@ public enum AsyncOperationCanceller {
 }
 
 
-public enum AsyncOperationError: Swift.Error {
-	public var _domain: String {
-		return "AsyncOperationError"
-	}
-	case cancelled(AsyncOperationCanceller)
-	case missingResult
-	
-	public var _code: Int {
-		switch self {
-		case .cancelled(let canceller):
-			switch canceller {
-			case .unknown: return -5
-			case .system: return -4
-			case .middleware: return -3
-			case .application: return -2
-			case .user: return -1
-			}
-		case .missingResult: return 1
-		}
-	}
+public protocol AsyncOperationError: Swift.Error {
+	static var missingResultError: Self { get }
+	var isCancelledError: Bool { get }
+	static func cancelledError(_ canceller: AsyncOperationCanceller) -> Self
 }
 
 
-open class AsyncOperation<Success>: Operation {
-	public typealias Failure = Swift.Error
-	public typealias Result = Swift.Result<Success, Failure>
+open class AsyncOperation<Success, Error: AsyncOperationError>: Operation {
+	public typealias Result = Swift.Result<Success, Error>
 	
 	// MARK: Property
 	
@@ -127,7 +110,7 @@ open class AsyncOperation<Success>: Operation {
 	open var result: Result?
 	
 	/// Error obtained from result
-	open var error: Swift.Error? {
+	open var error: Error? {
 		if let result = self.result {
 			if case .failure(let error) = result {
 				return error
@@ -171,12 +154,7 @@ open class AsyncOperation<Success>: Operation {
 	}
 	
 	open override var isCancelled: Bool {
-		return self.status == .cancelled || {
-			switch self.error {
-			case .some(AsyncOperationError.cancelled(_)): return true
-			default: return false
-			}
-		}()
+		return self.status == .cancelled || (self.error?.isCancelledError ?? false)
 	}
 	
 	open override var isAsynchronous: Bool {
@@ -253,13 +231,13 @@ open class AsyncOperation<Success>: Operation {
 	}
 	
 	/**
-		Finish this operation with specified failure
+		Finish this operation with specified error
 		
 		- parameters:
-			- failure: Error of this operation
+			- error: Error of this operation
 	*/
-	open func fail(_ failure: Failure) {
-		self.finish(Result.failure(failure))
+	open func fail(_ error: Error) {
+		self.finish(.failure(error))
 	}
 	
 	/**
@@ -269,7 +247,7 @@ open class AsyncOperation<Success>: Operation {
 			- success: Success of this operation
 	*/
 	open func complete(_ success: Success) {
-		self.finish(Result.success(success))
+		self.finish(.success(success))
 	}
 	
 	/**
@@ -288,7 +266,7 @@ open class AsyncOperation<Success>: Operation {
 		}
 		
 		// Cancel
-		self.result = Result.failure(AsyncOperationError.cancelled(canceller))
+		self.result = .failure(.cancelledError(canceller))
 		self.status = .cancelled
 		super.cancel()
 	}
@@ -310,7 +288,7 @@ open class AsyncOperation<Success>: Operation {
 	
 	open override func start() {
 		if self.isCancelled {
-			self.finish(.failure(self.error ?? AsyncOperationError.cancelled(.middleware)))
+			self.finish(.failure(self.error ?? .cancelledError(.middleware)))
 			return
 		}
 		if !self.isReady {
@@ -328,7 +306,7 @@ open class AsyncOperation<Success>: Operation {
 	
 	open override func main() {
 		if self.isCancelled {
-			self.finish(.failure(self.error ?? AsyncOperationError.cancelled(.middleware)))
+			self.finish(.failure(self.error ?? .cancelledError(.middleware)))
 			return
 		}
 		if self.isFinished {
@@ -343,7 +321,7 @@ open class AsyncOperation<Success>: Operation {
 	*/
 	open func getResult() throws -> Success {
 		guard let result = self.result else {
-			throw AsyncOperationError.missingResult
+			throw Error.missingResultError
 		}
 		return try result.get()
 	}
@@ -357,7 +335,7 @@ extension AsyncOperation where Success == AsyncOperationSuccess {
 		- parameters:
 			- error: Error of this operation, or nil if it succeeded
 	*/
-	open func finish(withError error: Failure?) {
+	public func finish(withError error: Error?) {
 		if let error = error {
 			self.fail(error)
 		}
@@ -369,7 +347,7 @@ extension AsyncOperation where Success == AsyncOperationSuccess {
 	/**
 		Finish this operation with success
 	*/
-	open func complete() {
+	public func complete() {
 		self.complete(Success())
 	}
 }
@@ -383,7 +361,7 @@ extension OperationQueue {
 			- op: Operation to add
 			- completionBlock: Block which will be set as completionBlock of op
 	*/
-	open func addOperation(_ op: Operation, completionBlock: (() -> Void)?) {
+	public func addOperation(_ op: Operation, completionBlock: (() -> Void)?) {
 		op.completionBlock = completionBlock
 		self.addOperation(op)
 	}

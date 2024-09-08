@@ -10,7 +10,20 @@ import Foundation
 public typealias AsyncBlock = (AsyncBlockOperation) -> Void
 
 
-final public class AsyncBlockOperation: AsyncOperation<AsyncOperationSuccess> {
+public enum AsyncBlockOperationError: AsyncOperationError {
+	case missingResult
+	case cancelled(AsyncOperationCanceller)
+	case failed(Swift.Error)
+	
+	public static var missingResultError: Self = .missingResult
+	public var isCancelledError: Bool {
+		guard case .cancelled = self else { return false }
+		return true
+	}
+	public static func cancelledError(_ canceller: AsyncOperationCanceller) -> Self { .cancelled(canceller) }
+}
+
+final public class AsyncBlockOperation: AsyncOperation<AsyncOperationSuccess, AsyncBlockOperationError> {
 	
 	// MARK: Property
 	

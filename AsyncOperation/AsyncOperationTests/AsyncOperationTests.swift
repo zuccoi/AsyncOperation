@@ -93,7 +93,7 @@ class AsyncOperationTests: XCTestCase {
 		op.start {
 			do {
 				_ = try op.getResult()
-			} catch TestAsyncOperation.Error.tooLong {
+			} catch TestAsyncOperationError.tooLong {
 				exp.fulfill()
 			} catch {}
 		}
@@ -111,7 +111,7 @@ class AsyncOperationTests: XCTestCase {
 		op.start {
 			do {
 				_ = try op.getResult()
-			} catch AsyncOperationError.cancelled(let canceller) {
+			} catch TestAsyncOperationError.cancelled(let canceller) {
 				XCTAssertEqual(canceller, .application)
 				exp.fulfill()
 			} catch {}
@@ -156,7 +156,7 @@ class AsyncOperationTests: XCTestCase {
 		op.start {
 			do {
 				_ = try op.getResult()
-			} catch AsyncOperationError.cancelled(let canceller) {
+			} catch TestAsyncOperationError.cancelled(let canceller) {
 				XCTAssertEqual(canceller, .unknown)
 				exp.fulfill()
 			} catch {}
@@ -246,7 +246,7 @@ class AsyncOperationTests: XCTestCase {
 		queue.addOperation(op2) {
 			do {
 				_ = try op2.getResult()
-			} catch AsyncOperationError.cancelled(_) {
+			} catch TestAsyncOperationError.cancelled(_) {
 				op2WasCancelled = true
 			} catch {}
 		}

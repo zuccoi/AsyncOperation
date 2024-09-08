@@ -46,17 +46,20 @@ class AsyncBlockOperationTests: XCTestCase {
 			let op = op
 			DispatchQueue.main.asyncAfter(deadline: .now() + 1, execute: {
 				if op.isCancelled {
+					op.finish(op.result)
 					return
 				}
-				op.fail(Error.test)
+				op.fail(.failed(Error.test))
 			})
 		})
 		op.start {
 			do {
 				_ = try op.getResult()
-			} catch Error.test {
+			} catch AsyncBlockOperationError.failed(Error.test) {
 				exp.fulfill()
-			} catch {}
+			} catch {
+				print("ERROR: Caught unexpected error: \(error)")
+			}
 		}
 		
 		self.waitForExpectations(timeout: 2) { error in
@@ -81,7 +84,7 @@ class AsyncBlockOperationTests: XCTestCase {
 		op.start {
 			do {
 				_ = try op.getResult()
-			} catch AsyncOperationError.cancelled(let canceller) {
+			} catch AsyncBlockOperationError.cancelled(let canceller) {
 				XCTAssertEqual(canceller, .application)
 				exp.fulfill()
 			} catch {}
